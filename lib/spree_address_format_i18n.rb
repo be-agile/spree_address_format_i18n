@@ -1,0 +1,5 @@
+require 'spree_core'
+require 'spree_extension'
+require 'spree_address_format_i18n/engine'
+require 'spree_address_format_i18n/version'
+require 'spree_address_format_i18n/configuration'

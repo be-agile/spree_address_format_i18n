@@ -1,0 +1,8 @@
+ja:
+  address_format_i18n:
+    - country
+    - zipcode
+    - state
+    - city
+    - address1
+    - address2
