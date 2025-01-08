@@ -17,6 +17,8 @@ module SpreeAddressFormatI18n
       Dir.glob(File.join(File.dirname(__FILE__), '../../app/**/*_decorator*.rb')) do |c|
         Rails.configuration.cache_classes ? require(c) : load(c)
       end
+
+      Rails.application.config.paths["app/views"].unshift(File.join(Rails.root, "app/views"))
     end
 
     config.to_prepare(&method(:activate).to_proc)
