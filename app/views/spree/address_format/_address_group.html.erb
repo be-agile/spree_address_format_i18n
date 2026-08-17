@@ -1,0 +1,13 @@
+<div class="<%= group[:name] %>">
+  <% if group[:fields].present? %>
+    <% group[:fields].each do |field| %>
+      <%= render partial: 'spree/address_format/address_field', locals: { field: field, address: address } %>
+    <% end %>
+  <% end %>
+
+  <% if group[:children].present? %>
+    <% group[:children].each do |child_group| %>
+      <%= render partial: 'spree/address_format/address_group', locals: { group: child_group, address: address } %>
+    <% end %>
+  <% end %>
+</div>

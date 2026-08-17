@@ -1,5 +1,5 @@
 module SpreeAddressFormatI18n
-  VERSION = '0.0.1'.freeze
+  VERSION = '1.1.0'.freeze  # Increment minor version for new feature
 
   def gem_version
     Gem::Version.new(VERSION)

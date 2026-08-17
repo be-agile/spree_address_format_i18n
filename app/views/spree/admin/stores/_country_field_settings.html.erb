@@ -1,0 +1,9 @@
+<div class="card mb-4">
+  <div class="card-header">
+    <h5 class="card-title"><%= Spree.t(:address_field_settings) %></h5>
+  </div>
+  <div class="card-body">
+    <%= f.spree_check_box :show_country_field, label: Spree.t(:show_country_field) %>
+    <%= f.spree_check_box :use_kana_fields, label: Spree.t(:use_kana_fields) %>
+  </div>
+</div>

@@ -1,0 +1,20 @@
+<% case field %>
+<% when 'firstname', 'lastname', 'firstname_kana', 'lastname_kana' %>
+  <%= address.send(field) %>
+<% when 'company' %>
+  <%= address.company %>
+<% when 'address1', 'address2' %>
+  <div class="street-address-line">
+    <%= address.send(field) %>
+  </div>
+<% when 'city' %>
+  <span class="locality"><%= address.city %></span>
+<% when 'state' %>
+  <span class="region"><%= address.state_text %></span>
+<% when 'zipcode' %>
+  <span class="postal-code"><%= address.zipcode %></span>
+<% when 'country' %>
+  <%= address.country.try(:name) %>
+<% else %>
+  <%= address.send(field) if address.respond_to?(field) %>
+<% end %>

@@ -1,0 +1,6 @@
+<!-- replace_contents 'div.address.vcard' -->
+<% address_groups = order_address_groups(current_store) %>
+
+<div class="address vcard">
+  <%= address %>
+</div>

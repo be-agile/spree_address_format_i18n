@@ -1,31 +1,55 @@
+<%# @gem-override spree_core-5.3.6/app/views/spree/addresses/_form.html.erb %>
+<%# reason: 住所フォームを order_address_fields の可変フィールド方式に置き換え、国フィールド非表示や必須マーカー表示を追加している %>
+<%# Spree 5.3 追従: countries/states の data 属性を address_form_countries_states_cache_key で cache 化 %>
+<%# @see https://github.com/be-agile/giga-repeat/commit/42492d8a839026e80c486d1e4f1621d16b5ae02f %>
+<% address ||= address_form.object %>
 <% address_id = address_type.chars.first %>
 
-<% order_address_fields(Spree::Address::ADDRESS_FIELDS).each do |field| %>
-  <% if field == "country" %>
-    <div class="form-group checkout-content-inner-field" id="<%= "#{address_id}country" %>">
-      <div id="<%= "#{address_id}country-selection" %>" class="d-block position-relative has-float-label">
-        <%= address_form.collection_select :country_id, available_countries, :id, :name,
-                                           { prompt: Spree.t(:country) },
-                                           { class: 'custom-select spree-flat-select',
-                                             aria: { label: Spree.t(:country) } } %>
-        <%= address_form.label(Spree.t(:country), Spree.t(:country)) %>
-      </div>
-    </div>
-  <% elsif field == "state" %>
-    <div class="form-group mb-4">
-      <%= address_field(address_form, :state, address_id) { address_state(address_form, address.country, address_id) } if Spree::Config[:address_requires_state] %>
-    </div>
-  <% elsif field == "zipcode" %>
-    <div class="form-group mb-4">
-      <%= address_field(address_form, :zipcode, address_id) { address_zipcode(address_form, address.country, address_id) } %>
-    </div>
-  <% else %>
-    <% next if field == "company" && !Spree::Config[:company] %>
-    <% next if field == "alternative_#{address_id}_phone" && !Spree::Config["alternative_#{address_id}_phone"] %>
-    <div class="form-group mb-4">
-      <%= address_field(address_form, field.to_sym, address_id) %>
-    </div>
-  <% end %>
-<% end %>
+<%# address-autocomplete (Spree 5.3コアのGoogle Places補完) は外す。本フォームは
+    可変フィールド方式で address1 等のコア必須ターゲットを持たないため、付けたままだと
+    コントローラが Missing target "address1" で disconnect 時に JSエラーを出す。 %>
+<div class="inner"
+     data-controller="address-form"
+     <% cache address_form_countries_states_cache_key do %>
+      data-address-form-countries-value="<%= available_countries.to_json %>"
+      data-address-form-states-value="<%= available_states.to_json %>"
+     <% end %>
+     data-address-form-current-state-id-value="<%= address.state_id %>">
 
-<p class="text-right mb-5 checkout-content-inner-field"><span id="required_marker"><%= Spree.t(:required) %></span> <%= Spree.t(:required_fields) %></p>
+  <% order_address_fields(current_store).each do |field| %>
+    <% if field == "country" %>
+      <%# 国フィールドをdisplay:noneで非表示にする（show_country_fieldがfalseの場合） %>
+      <div id="<%= "#{address_id}country" %>" <%= ('style="display:none;"'.html_safe) unless current_store.show_country_field %>>
+        <div class="form-group mb-0">
+          <div id="<%= "#{address_id}country-selection" %>">
+            <%= address_form.label(Spree.t(:country), Spree.t(:country), class: 'block text-xs text-neutral-600 mb-1') %>
+            <%= address_form.select :country_id, options_for_select(available_countries.map { |c| [c.name, c.id, data: { iso: c.iso }] }, address_form.object.country_id || current_store.default_country_id),
+                                    {  },
+                                    { class: 'w-full select-input mb-4',
+                                      data: {
+                                        'address-form-target': 'country',
+                                        'action': "change->address-form#changeCountry"
+                                      },
+                                      aria: { label: Spree.t(:country) } } %>
+          </div>
+        </div>
+      </div>
+    <% elsif field == "state" %>
+      <div class="form-group mb-4 address-form">
+        <%= address_field(address_form, :state, address_id) { address_state(address_form, address.country, address_id) } if Spree::Config[:address_requires_state] %>
+      </div>
+    <% elsif field == "zipcode" %>
+      <div class="form-group mb-4">
+        <%= address_field(address_form, :zipcode, address_id) { address_zipcode(address_form, address.country, address_id) } %>
+      </div>
+    <% else %>
+      <% next if field == "company" && !Spree::Config[:company] %>
+      <% next if field == "alternative_#{address_id}_phone" && !Spree::Config["alternative_#{address_id}_phone"] %>
+      <div class="form-group mb-4">
+        <%= address_field(address_form, field.to_sym, address_id) %>
+      </div>
+    <% end %>
+  <% end %>
+
+  <p class="text-right mb-5 checkout-content-inner-field"><span id="required_marker"><%= Spree.t(:required) %></span> <%= Spree.t(:required_fields) %></p>
+</div>

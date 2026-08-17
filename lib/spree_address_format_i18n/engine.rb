@@ -13,6 +13,12 @@ module SpreeAddressFormatI18n
       SpreeAddressFormatI18n::Config = SpreeAddressFormatI18n::Configuration.new
     end
 
+    initializer 'spree_address_format_i18n.autoloader' do |app|
+      if Rails.autoloaders.zeitwerk_enabled?
+        Rails.autoloaders.main.ignore("#{root}/app/overrides")
+      end
+    end
+
     def self.activate
       Dir.glob(File.join(File.dirname(__FILE__), '../../app/**/*_decorator*.rb')) do |c|
         Rails.configuration.cache_classes ? require(c) : load(c)

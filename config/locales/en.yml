@@ -1,0 +1,6 @@
+en:
+  spree:
+    use_kana_fields: "Use Kana Fields in Address"
+    show_country_field: "Show Country Field in Address"
+    address_field_settings: "Address Field Settings"
+    internationalization: "Internationalization"

@@ -1,0 +1,27 @@
+ja:
+  spree:
+    lastname_kana: セイ
+    firstname_kana: メイ
+    fax: FAX
+    company_kana: カナ会社名
+    use_kana_fields: "住所にかなフィールドを使用する"
+    show_country_field: "住所に国フィールドを表示する"
+    address_field_settings: "住所フィールド設定"
+    internationalization: "国際化"
+  activerecord:
+    attributes:
+      spree/address:
+        lastname_kana: セイ
+        firstname_kana: メイ
+        company_kana: カナ会社名
+        fax: FAX
+      spree/order/bill_address:
+        lastname_kana: セイ
+        firstname_kana: メイ
+        company_kana: カナ会社名
+        fax: FAX
+      spree/order/ship_address:
+        lastname_kana: セイ
+        firstname_kana: メイ
+        company_kana: カナ会社名
+        fax: FAX
