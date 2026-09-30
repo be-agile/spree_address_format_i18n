@@ -27,7 +27,7 @@ module SpreeAddressFormatI18n
       base.validates :firstname_kana, presence: true, if: -> { kana_presence_required.call(self, :firstname_kana) }
       base.validates :firstname_kana, format: { with: /\A[\p{Katakana}\p{Blank}ー・]+\z/, allow_blank: true, message: :invalid_katakana }, if: -> { Spree::Store.current.use_kana_fields }
 
-      base.validates :company_kana, format: { with: /\A[\p{Katakana}\p{Blank}ー・]+\z/ }, if: -> { company_kana.present? }
+      base.validates :company_kana, format: { with: /\A[\p{Katakana}\p{Blank}ー・]+\z/, message: :invalid_katakana }, if: -> { company_kana.present? }
     end
 
 

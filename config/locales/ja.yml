@@ -4,6 +4,19 @@ ja:
     firstname_kana: メイ
     fax: FAX
     company_kana: カナ会社名
+    address_placeholders:
+      company: 例）株式会社山田商事
+      company_kana: 例）カブシキガイシャヤマダショウジ
+      lastname: 例）山田
+      firstname: 例）太郎
+      lastname_kana: 例）ヤマダ
+      firstname_kana: 例）タロウ
+      zipcode: 例）150-0001
+      city: 例）渋谷区
+      address1: 例）神宮前1-1-1
+      address2: 例）山田ビル3F
+      phone: 例）03-1234-5678
+      fax: 例）03-1234-5679
     use_kana_fields: "住所にかなフィールドを使用する"
     show_country_field: "住所に国フィールドを表示する"
     address_field_settings: "住所フィールド設定"
@@ -25,3 +38,6 @@ ja:
         firstname_kana: メイ
         company_kana: カナ会社名
         fax: FAX
+  errors:
+    messages:
+      invalid_katakana: は全角カタカナで入力してください（漢字・ひらがな・数字・記号は使えません）

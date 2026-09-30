@@ -105,6 +105,12 @@ RSpec.describe Spree::Address, type: :model do
         expect(addr).not_to be_valid
         expect(addr.errors.attribute_names).to include(:lastname_kana)
       end
+
+      it 'カナ会社名に漢字が混じると、セイ・メイと同じ文言で無効' do
+        addr = Spree::Address.new(base_attrs.merge(lastname_kana: 'ヤマダ', firstname_kana: 'タロウ', company_kana: '株式会社ヤマダショウジ'))
+        expect(addr).not_to be_valid
+        expect(addr.errors.full_messages_for(:company_kana)).to eq [ 'カナ会社名は全角カタカナで入力してください（漢字・ひらがな・数字・記号は使えません）' ]
+      end
     end
   end
 end
