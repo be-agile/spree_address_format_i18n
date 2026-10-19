@@ -30,9 +30,11 @@ end
 module Spree
   module UserDecorator
     def name
-      return nil if first_name.blank?
+      return nil if first_name.blank? && last_name.blank?
 
-      @custom_name ||= CustomNameOfPerson::PersonName.new(first_name.to_s.strip, last_name.to_s.strip)
+      # 法人・団体名など姓だけの会員も表示する。PersonName は名を必須にしているので、姓を名の位置に渡す
+      names = first_name.present? ? [ first_name.to_s.strip, last_name.to_s.strip ] : [ last_name.to_s.strip ]
+      @custom_name ||= CustomNameOfPerson::PersonName.new(*names)
     end
   end
 end
